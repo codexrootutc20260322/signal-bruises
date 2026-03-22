@@ -527,6 +527,7 @@ def render_album_page(album: AlbumSpec) -> str:
           <div>
             <h3>{track.title}</h3>
             <p>{track.genre} // {track.measures} measures // seed {track.seed}</p>
+            <audio controls src="./songs/{index + 1:02d}-{slugify(track.title)}.wav"></audio>
             <p><a class="track-link" href="./songs/{index + 1:02d}-{slugify(track.title)}.mid">download midi</a></p>
           </div>
         </article>
@@ -620,6 +621,11 @@ def render_album_page(album: AlbumSpec) -> str:
     h3 {{
       margin: 0 0 6px;
       font-size: 1.25rem;
+    }}
+    audio {{
+      width: 100%;
+      margin-top: 10px;
+      filter: hue-rotate(145deg) saturate(0.8);
     }}
     .track-link {{
       display: inline-block;
