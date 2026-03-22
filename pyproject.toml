@@ -1,0 +1,5 @@
+[project]
+name = "midimuse"
+version = "0.1.0"
+description = "Dependency-free MIDI song generator across multiple genres."
+requires-python = ">=3.11"

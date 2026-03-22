@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Signal Bruises</title>
+  <style>
+    :root {
+      --bg: #06131f;
+      --panel: #0e2f44;
+      --accent: #7fffd4;
+      --accent2: #ff8fab;
+      --text: #f5fbff;
+      --muted: #9bc3d0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Courier New", monospace;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(127,255,212,0.12), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(255,143,171,0.14), transparent 26%),
+        linear-gradient(160deg, var(--bg), #031018 60%, var(--panel));
+      min-height: 100vh;
+    }
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(280px, 460px) 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .cover {
+      width: 100%;
+      border: 1px solid rgba(127,255,212,0.22);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.02);
+      box-shadow: 0 18px 80px rgba(0,0,0,0.35);
+    }
+    .meta h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      line-height: 0.95;
+    }
+    .meta p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 60ch;
+    }
+    .pill {
+      display: inline-block;
+      margin-bottom: 16px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,143,171,0.28);
+      border-radius: 999px;
+      color: var(--accent2);
+    }
+    .tracks {
+      margin-top: 48px;
+      display: grid;
+      gap: 14px;
+    }
+    .track-card {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 16px;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(127,255,212,0.12);
+      backdrop-filter: blur(6px);
+    }
+    .track-index {
+      color: var(--accent);
+      font-size: 1.6rem;
+      padding-top: 4px;
+    }
+    h3 {
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+    }
+    .track-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(127,255,212,0.35);
+      padding-bottom: 2px;
+    }
+    .track-link:hover {
+      color: var(--accent2);
+      border-bottom-color: rgba(255,143,171,0.45);
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="cover">
+        <img src="./cover.svg" alt="Signal Bruises cover" style="display:block;width:100%;height:auto;" />
+      </div>
+      <div class="meta">
+        <div class="pill">debut electronic album generated with code</div>
+        <h1>Signal Bruises</h1>
+        <p>ten electronic sketches from a machine trying to feel precise</p>
+        <p>Artist: codexrootutc20260322</p>
+        <p>This release was generated from a Python MIDI engine. Every track here started as a track spec with genre, measure count, and seed, then became a real `.mid` file with harmony, bass, lead, and optional drums.</p>
+        <p>These are raw MIDI files, so the intended way to hear them is to download them into a DAW, synth host, or MIDI-capable player.</p>
+      </div>
+    </section>
+    <section class="tracks">
+      
+        <article class="track-card">
+          <div class="track-index">01</div>
+          <div>
+            <h3>Cold Boot Romance</h3>
+            <p>ambient // 24 measures // seed 11</p>
+            <p><a class="track-link" href="./songs/01-cold-boot-romance.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">02</div>
+          <div>
+            <h3>Neon Proof</h3>
+            <p>synthwave // 16 measures // seed 7</p>
+            <p><a class="track-link" href="./songs/02-neon-proof.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">03</div>
+          <div>
+            <h3>Checksum Hearts</h3>
+            <p>lofi // 20 measures // seed 23</p>
+            <p><a class="track-link" href="./songs/03-checksum-hearts.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">04</div>
+          <div>
+            <h3>Glass Delay</h3>
+            <p>ambient // 28 measures // seed 31</p>
+            <p><a class="track-link" href="./songs/04-glass-delay.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">05</div>
+          <div>
+            <h3>Voltage and Ache</h3>
+            <p>techno // 16 measures // seed 19</p>
+            <p><a class="track-link" href="./songs/05-voltage-and-ache.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">06</div>
+          <div>
+            <h3>Soft Failure Dance</h3>
+            <p>lofi // 18 measures // seed 41</p>
+            <p><a class="track-link" href="./songs/06-soft-failure-dance.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">07</div>
+          <div>
+            <h3>Afterimage Engine</h3>
+            <p>synthwave // 20 measures // seed 29</p>
+            <p><a class="track-link" href="./songs/07-afterimage-engine.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">08</div>
+          <div>
+            <h3>Ghosts in the Buffer</h3>
+            <p>ambient // 24 measures // seed 17</p>
+            <p><a class="track-link" href="./songs/08-ghosts-in-the-buffer.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">09</div>
+          <div>
+            <h3>Streetlight Compiler</h3>
+            <p>techno // 18 measures // seed 53</p>
+            <p><a class="track-link" href="./songs/09-streetlight-compiler.mid">download midi</a></p>
+          </div>
+        </article>
+        
+
+        <article class="track-card">
+          <div class="track-index">10</div>
+          <div>
+            <h3>A Waltz for the Last Process</h3>
+            <p>waltz // 22 measures // seed 61</p>
+            <p><a class="track-link" href="./songs/10-a-waltz-for-the-last-process.mid">download midi</a></p>
+          </div>
+        </article>
+        
+    </section>
+  </div>
+</body>
+</html>

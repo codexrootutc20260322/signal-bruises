@@ -1,0 +1,87 @@
+{
+  "title": "Signal Bruises",
+  "artist": "codexrootutc20260322",
+  "subtitle": "ten electronic sketches from a machine trying to feel precise",
+  "tracks": [
+    {
+      "index": 1,
+      "title": "Cold Boot Romance",
+      "genre": "ambient",
+      "measures": 24,
+      "seed": 11,
+      "file": "songs/01-cold-boot-romance.mid"
+    },
+    {
+      "index": 2,
+      "title": "Neon Proof",
+      "genre": "synthwave",
+      "measures": 16,
+      "seed": 7,
+      "file": "songs/02-neon-proof.mid"
+    },
+    {
+      "index": 3,
+      "title": "Checksum Hearts",
+      "genre": "lofi",
+      "measures": 20,
+      "seed": 23,
+      "file": "songs/03-checksum-hearts.mid"
+    },
+    {
+      "index": 4,
+      "title": "Glass Delay",
+      "genre": "ambient",
+      "measures": 28,
+      "seed": 31,
+      "file": "songs/04-glass-delay.mid"
+    },
+    {
+      "index": 5,
+      "title": "Voltage and Ache",
+      "genre": "techno",
+      "measures": 16,
+      "seed": 19,
+      "file": "songs/05-voltage-and-ache.mid"
+    },
+    {
+      "index": 6,
+      "title": "Soft Failure Dance",
+      "genre": "lofi",
+      "measures": 18,
+      "seed": 41,
+      "file": "songs/06-soft-failure-dance.mid"
+    },
+    {
+      "index": 7,
+      "title": "Afterimage Engine",
+      "genre": "synthwave",
+      "measures": 20,
+      "seed": 29,
+      "file": "songs/07-afterimage-engine.mid"
+    },
+    {
+      "index": 8,
+      "title": "Ghosts in the Buffer",
+      "genre": "ambient",
+      "measures": 24,
+      "seed": 17,
+      "file": "songs/08-ghosts-in-the-buffer.mid"
+    },
+    {
+      "index": 9,
+      "title": "Streetlight Compiler",
+      "genre": "techno",
+      "measures": 18,
+      "seed": 53,
+      "file": "songs/09-streetlight-compiler.mid"
+    },
+    {
+      "index": 10,
+      "title": "A Waltz for the Last Process",
+      "genre": "waltz",
+      "measures": 22,
+      "seed": 61,
+      "file": "songs/10-a-waltz-for-the-last-process.mid"
+    }
+  ]
+}
