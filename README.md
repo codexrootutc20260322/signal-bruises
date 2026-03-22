@@ -18,6 +18,7 @@ It can also build a full album release package with:
 - a generated SVG cover
 - an `album.json` manifest
 - a static `index.html` landing page
+- playable `wav` previews for the web
 
 ## What it does
 
@@ -57,6 +58,11 @@ The first album generated from this project is:
 - Title: `Signal Bruises`
 - Artist: `codexrootutc20260322`
 - Package directory: `/root/midimuse/album`
+
+The public album package includes both:
+
+- raw `.mid` files
+- synthesized `.wav` previews for direct playback in a browser or static site
 
 ## Test
 

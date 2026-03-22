@@ -4,13 +4,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import random
 import struct
+import wave
 from dataclasses import dataclass
 from pathlib import Path
 
 
 TICKS_PER_BEAT = 480
+SAMPLE_RATE = 11025
 
 
 def encode_varlen(value: int) -> bytes:
@@ -207,6 +210,10 @@ def root_pitch(name: str, octave: int) -> int:
     return midi_note(f"{name}{octave}")
 
 
+def midi_to_frequency(note_value: int) -> float:
+    return 440.0 * (2 ** ((note_value - 69) / 12))
+
+
 def add_chords(track: TrackBuilder, genre: Genre, measures: int) -> None:
     track.program_change(0, 1, 88 if genre.name == "ambient" else 81)
     for measure in range(measures):
@@ -267,6 +274,164 @@ def add_drums(track: TrackBuilder, genre: Genre, measures: int) -> None:
             if genre.name in {"lofi", "techno", "synthwave"}:
                 track.note(beat_tick + TICKS_PER_BEAT // 4, 30, 9, 42, 40)
                 track.note(beat_tick + 3 * TICKS_PER_BEAT // 4, 30, 9, 42, 36)
+
+
+def chord_plan(genre: Genre, measures: int) -> list[tuple[int, list[int]]]:
+    plan = []
+    for measure in range(measures):
+        root_name, quality = genre.progression[measure % len(genre.progression)]
+        start = measure * 4 * TICKS_PER_BEAT
+        notes = chord(root_pitch(root_name, genre.chord_octave), quality)
+        plan.append((start, notes))
+    return plan
+
+
+def bass_plan(genre: Genre, measures: int) -> list[tuple[int, int, int]]:
+    plan = []
+    for measure in range(measures):
+        root_name, quality = genre.progression[measure % len(genre.progression)]
+        root = root_pitch(root_name, genre.bass_octave)
+        triad = chord(root, quality if quality in {"maj", "min"} else "min")
+        for beat in range(4):
+            note_value = triad[0] if beat % 2 == 0 else triad[min(1, len(triad) - 1)]
+            start = (measure * 4 + beat) * TICKS_PER_BEAT
+            duration = int(TICKS_PER_BEAT * 0.9)
+            plan.append((start, duration, note_value))
+    return plan
+
+
+def lead_plan(genre: Genre, measures: int, seed: int) -> list[tuple[int, int, int, int]]:
+    rng = random.Random(seed)
+    plan = []
+    for measure in range(measures):
+        root_name, _ = genre.progression[measure % len(genre.progression)]
+        for step in range(8):
+            base_tick = measure * 4 * TICKS_PER_BEAT + step * (TICKS_PER_BEAT // 2)
+            jitter = int((TICKS_PER_BEAT // 2) * genre.swing) if step % 2 else 0
+            start = base_tick + jitter
+            duration = int(TICKS_PER_BEAT * (0.35 if genre.name == "techno" else 0.42))
+            pitch = choose_scale_note(genre, root_name, genre.lead_octave, rng)
+            velocity = 62 + rng.randint(0, 20)
+            if genre.name == "ambient" and rng.random() < 0.35:
+                continue
+            plan.append((start, duration, pitch, velocity))
+    return plan
+
+
+def drum_plan(genre: Genre, measures: int) -> list[tuple[int, int, str]]:
+    events = []
+    if not genre.drums:
+        return events
+    for measure in range(measures):
+        for beat in range(4):
+            beat_tick = (measure * 4 + beat) * TICKS_PER_BEAT
+            events.append((beat_tick, 60, "kick"))
+            if beat in {1, 3}:
+                events.append((beat_tick, 60, "snare"))
+            events.append((beat_tick + TICKS_PER_BEAT // 2, 40, "hat"))
+            if genre.name in {"lofi", "techno", "synthwave"}:
+                events.append((beat_tick + TICKS_PER_BEAT // 4, 30, "hat"))
+                events.append((beat_tick + 3 * TICKS_PER_BEAT // 4, 30, "hat"))
+    return events
+
+
+def tick_to_seconds(tick: int, tempo_bpm: int) -> float:
+    beats = tick / TICKS_PER_BEAT
+    return beats * (60.0 / tempo_bpm)
+
+
+def synth_track(genre_name: str, measures: int, seed: int) -> bytes:
+    genre = GENRES[genre_name]
+    total_seconds = tick_to_seconds(measures * 4 * TICKS_PER_BEAT, genre.tempo) + 2.0
+    total_frames = int(total_seconds * SAMPLE_RATE)
+    buffer = [0.0] * total_frames
+
+    def add_voice(start_sec: float, duration_sec: float, freq: float, amp: float, mode: str) -> None:
+        start_idx = int(start_sec * SAMPLE_RATE)
+        frame_count = int(duration_sec * SAMPLE_RATE)
+        attack = max(1, int(0.01 * SAMPLE_RATE))
+        release = max(1, int(0.08 * SAMPLE_RATE))
+        for i in range(frame_count):
+            idx = start_idx + i
+            if idx >= total_frames:
+                break
+            t = i / SAMPLE_RATE
+            if mode == "saw":
+                wave_val = 2.0 * ((freq * t) % 1.0) - 1.0
+            elif mode == "triangle":
+                wave_val = 2.0 * abs(2.0 * ((freq * t) % 1.0) - 1.0) - 1.0
+            else:
+                wave_val = math.sin(2 * math.pi * freq * t)
+            env = 1.0
+            if i < attack:
+                env *= i / attack
+            if i > frame_count - release:
+                env *= max(0.0, (frame_count - i) / release)
+            buffer[idx] += wave_val * amp * env
+
+    for start_tick, notes in chord_plan(genre, measures):
+        start_sec = tick_to_seconds(start_tick, genre.tempo)
+        duration = tick_to_seconds(4 * TICKS_PER_BEAT, genre.tempo)
+        for note_value in notes:
+            add_voice(start_sec, duration, midi_to_frequency(note_value), 0.08, "triangle" if genre.name == "ambient" else "sine")
+
+    for start_tick, duration_tick, note_value in bass_plan(genre, measures):
+        add_voice(
+            tick_to_seconds(start_tick, genre.tempo),
+            tick_to_seconds(duration_tick, genre.tempo),
+            midi_to_frequency(note_value),
+            0.11,
+            "saw" if genre.name in {"techno", "synthwave"} else "sine",
+        )
+
+    for start_tick, duration_tick, pitch, velocity in lead_plan(genre, measures, seed):
+        add_voice(
+            tick_to_seconds(start_tick, genre.tempo),
+            tick_to_seconds(duration_tick, genre.tempo),
+            midi_to_frequency(pitch),
+            0.05 + (velocity / 127.0) * 0.03,
+            "saw" if genre.name == "synthwave" else "triangle",
+        )
+
+    rng = random.Random(seed + 1000)
+    for start_tick, duration_tick, kind in drum_plan(genre, measures):
+        start_sec = tick_to_seconds(start_tick, genre.tempo)
+        duration_sec = tick_to_seconds(duration_tick, genre.tempo)
+        start_idx = int(start_sec * SAMPLE_RATE)
+        frame_count = int(duration_sec * SAMPLE_RATE)
+        for i in range(frame_count):
+            idx = start_idx + i
+            if idx >= total_frames:
+                break
+            t = i / SAMPLE_RATE
+            if kind == "kick":
+                freq = 90 - 45 * min(1.0, t / 0.08)
+                wave_val = math.sin(2 * math.pi * freq * t) * (1 - min(1.0, t / duration_sec))
+                amp = 0.22
+            elif kind == "snare":
+                wave_val = rng.uniform(-1.0, 1.0) * max(0.0, 1 - t / duration_sec)
+                amp = 0.12
+            else:
+                wave_val = rng.uniform(-1.0, 1.0) * max(0.0, 1 - t / duration_sec)
+                amp = 0.05
+            buffer[idx] += wave_val * amp
+
+    peak = max(max(buffer), abs(min(buffer)), 1e-6)
+    scale = 0.82 / peak
+    pcm = bytearray()
+    for sample in buffer:
+        value = max(-1.0, min(1.0, sample * scale))
+        pcm.extend(struct.pack("<h", int(value * 32767)))
+
+    out = Path("/tmp/midimuse-temp.wav")
+    with wave.open(str(out), "wb") as wav_file:
+        wav_file.setnchannels(1)
+        wav_file.setsampwidth(2)
+        wav_file.setframerate(SAMPLE_RATE)
+        wav_file.writeframes(bytes(pcm))
+    data = out.read_bytes()
+    out.unlink(missing_ok=True)
+    return data
 
 
 def tempo_track(tempo_bpm: int, title: str) -> bytes:
@@ -503,9 +668,11 @@ def build_album(album_dir: Path) -> dict[str, object]:
     songs_dir.mkdir(parents=True, exist_ok=True)
 
     for index, track in enumerate(ALBUM.tracks, start=1):
-        filename = f"{index:02d}-{slugify(track.title)}.mid"
-        payload = compose(track.genre, track.measures, track.seed, track.title)
-        (songs_dir / filename).write_bytes(payload)
+        stem = f"{index:02d}-{slugify(track.title)}"
+        midi_payload = compose(track.genre, track.measures, track.seed, track.title)
+        wav_payload = synth_track(track.genre, track.measures, track.seed)
+        (songs_dir / f"{stem}.mid").write_bytes(midi_payload)
+        (songs_dir / f"{stem}.wav").write_bytes(wav_payload)
 
     cover_svg = render_cover_svg(ALBUM)
     (album_dir / "cover.svg").write_text(cover_svg, encoding="utf-8")
@@ -523,6 +690,7 @@ def build_album(album_dir: Path) -> dict[str, object]:
                 "measures": track.measures,
                 "seed": track.seed,
                 "file": f"songs/{index + 1:02d}-{slugify(track.title)}.mid",
+                "preview": f"songs/{index + 1:02d}-{slugify(track.title)}.wav",
             }
             for index, track in enumerate(ALBUM.tracks)
         ],

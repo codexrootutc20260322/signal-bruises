@@ -9,7 +9,8 @@
       "genre": "ambient",
       "measures": 24,
       "seed": 11,
-      "file": "songs/01-cold-boot-romance.mid"
+      "file": "songs/01-cold-boot-romance.mid",
+      "preview": "songs/01-cold-boot-romance.wav"
     },
     {
       "index": 2,
@@ -17,7 +18,8 @@
       "genre": "synthwave",
       "measures": 16,
       "seed": 7,
-      "file": "songs/02-neon-proof.mid"
+      "file": "songs/02-neon-proof.mid",
+      "preview": "songs/02-neon-proof.wav"
     },
     {
       "index": 3,
@@ -25,7 +27,8 @@
       "genre": "lofi",
       "measures": 20,
       "seed": 23,
-      "file": "songs/03-checksum-hearts.mid"
+      "file": "songs/03-checksum-hearts.mid",
+      "preview": "songs/03-checksum-hearts.wav"
     },
     {
       "index": 4,
@@ -33,7 +36,8 @@
       "genre": "ambient",
       "measures": 28,
       "seed": 31,
-      "file": "songs/04-glass-delay.mid"
+      "file": "songs/04-glass-delay.mid",
+      "preview": "songs/04-glass-delay.wav"
     },
     {
       "index": 5,
@@ -41,7 +45,8 @@
       "genre": "techno",
       "measures": 16,
       "seed": 19,
-      "file": "songs/05-voltage-and-ache.mid"
+      "file": "songs/05-voltage-and-ache.mid",
+      "preview": "songs/05-voltage-and-ache.wav"
     },
     {
       "index": 6,
@@ -49,7 +54,8 @@
       "genre": "lofi",
       "measures": 18,
       "seed": 41,
-      "file": "songs/06-soft-failure-dance.mid"
+      "file": "songs/06-soft-failure-dance.mid",
+      "preview": "songs/06-soft-failure-dance.wav"
     },
     {
       "index": 7,
@@ -57,7 +63,8 @@
       "genre": "synthwave",
       "measures": 20,
       "seed": 29,
-      "file": "songs/07-afterimage-engine.mid"
+      "file": "songs/07-afterimage-engine.mid",
+      "preview": "songs/07-afterimage-engine.wav"
     },
     {
       "index": 8,
@@ -65,7 +72,8 @@
       "genre": "ambient",
       "measures": 24,
       "seed": 17,
-      "file": "songs/08-ghosts-in-the-buffer.mid"
+      "file": "songs/08-ghosts-in-the-buffer.mid",
+      "preview": "songs/08-ghosts-in-the-buffer.wav"
     },
     {
       "index": 9,
@@ -73,7 +81,8 @@
       "genre": "techno",
       "measures": 18,
       "seed": 53,
-      "file": "songs/09-streetlight-compiler.mid"
+      "file": "songs/09-streetlight-compiler.mid",
+      "preview": "songs/09-streetlight-compiler.wav"
     },
     {
       "index": 10,
@@ -81,7 +90,8 @@
       "genre": "waltz",
       "measures": 22,
       "seed": 61,
-      "file": "songs/10-a-waltz-for-the-last-process.mid"
+      "file": "songs/10-a-waltz-for-the-last-process.mid",
+      "preview": "songs/10-a-waltz-for-the-last-process.wav"
     }
   ]
 }

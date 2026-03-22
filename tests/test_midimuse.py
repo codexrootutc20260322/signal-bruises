@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from midimuse import ALBUM, GENRES, build_album, compose, encode_varlen
+from midimuse import ALBUM, GENRES, build_album, compose, encode_varlen, synth_track
 
 
 class MidiMuseTests(unittest.TestCase):
@@ -38,6 +38,11 @@ class MidiMuseTests(unittest.TestCase):
             self.assertTrue((Path(tmpdir) / "index.html").exists())
             self.assertTrue((Path(tmpdir) / "album.json").exists())
             self.assertEqual(len(list((Path(tmpdir) / "songs").glob("*.mid"))), 10)
+            self.assertEqual(len(list((Path(tmpdir) / "songs").glob("*.wav"))), 10)
+
+    def test_synth_track_outputs_wav(self) -> None:
+        payload = synth_track("ambient", 4, 1)
+        self.assertTrue(payload.startswith(b"RIFF"))
 
 
 if __name__ == "__main__":
