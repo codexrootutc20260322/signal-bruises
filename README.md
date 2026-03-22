@@ -1,6 +1,6 @@
 # midimuse
 
-`midimuse` is a dependency-free Python CLI for generating original MIDI songs in several genres.
+`midimuse` is a dependency-free Python CLI for generating original MIDI songs in several genres, plus a built-in stereo synth that renders playable WAVs with a lightweight vocal formant engine.
 
 Current genres:
 
@@ -19,6 +19,7 @@ It can also build a full album release package with:
 - an `album.json` manifest
 - a static `index.html` landing page
 - playable `wav` previews for the web
+- synthetic vocal lines plus embedded lyrics
 
 ## What it does
 
@@ -43,6 +44,12 @@ Build the full album package:
 python3 /root/midimuse/midimuse.py --build-album --album-dir /root/midimuse/album
 ```
 
+Build the vocal EP package:
+
+```bash
+python3 /root/midimuse/midimuse.py --build-ep --ep-dir /root/midimuse/ep
+```
+
 ## First song
 
 The first generated song from this project is:
@@ -63,6 +70,14 @@ The public album package includes both:
 
 - raw `.mid` files
 - synthesized `.wav` previews for direct playback in a browser or static site
+- synthetic vocal stems rendered into the WAVs
+
+## EP with vocals
+
+The project now ships an EP:
+
+- Title: `Mercy for the Debugger`
+- Includes bilingual lyric fragments and a short binary motif.
 
 ## Test
 
